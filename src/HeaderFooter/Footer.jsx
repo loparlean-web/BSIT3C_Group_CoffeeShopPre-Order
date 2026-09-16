@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   View,
   Text,
@@ -8,21 +9,28 @@ import {
 export default function Footer() {
   return (
     <View style={styles.footer}>
-      <Text style={styles.footerText}>
+
+      <Text style={styles.text}>
         Brew Café © 2026
       </Text>
+
+      <Text style={styles.text}>
+        Fresh Coffee • Happy Customers
+      </Text>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   footer: {
-    padding: 15,
+    padding: 12,
     alignItems: "center",
     backgroundColor: "#F2E6D9",
   },
 
-  footerText: {
+  text: {
     color: "#6F4E37",
+    fontSize: 12,
   },
 });
