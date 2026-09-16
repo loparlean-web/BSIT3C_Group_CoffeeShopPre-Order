@@ -1,58 +1,111 @@
 import React from "react";
+
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 
 import Header from "../HeaderFooter/Header";
 import Footer from "../HeaderFooter/Footer";
 
-export default function Dashboard({ navigation, cart }) {
+export default function Dashboard({
+  navigation,
+  cart,
+  favorites,
+  user,
+}) {
   return (
     <View style={styles.container}>
 
       <Header />
 
-      <View style={styles.content}>
+      <ScrollView>
 
-        <Text style={styles.title}>
-          Welcome to Brew Café ☕
-        </Text>
+        <View style={styles.content}>
 
-        <Text style={styles.text}>
-          Order your favorite coffee from our menu.
-        </Text>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Selection")}
-        >
-          <Text style={styles.buttonText}>
-            ☕ Browse Coffee
+          <Text style={styles.welcome}>
+            Hello, {user?.name || "Customer"}! 👋
           </Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Purchase")}
-        >
-          <Text style={styles.buttonText}>
-            🛒 My Cart ({cart.length})
+          <Text style={styles.title}>
+            What would you like today?
           </Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.logout}
-          onPress={() => navigation.replace("Login")}
-        >
-          <Text style={styles.logoutText}>
-            Logout
+          <Text style={styles.subtitle}>
+            Fresh coffee, prepared just for you.
           </Text>
-        </TouchableOpacity>
 
-      </View>
+          <TouchableOpacity
+            style={styles.mainButton}
+            onPress={() =>
+              navigation.navigate("Selection")
+            }
+          >
+            <Text style={styles.buttonText}>
+              ☕ Browse Coffee
+            </Text>
+          </TouchableOpacity>
+
+          <View style={styles.row}>
+
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate("Favorites")
+              }
+            >
+              <Text style={styles.icon}>
+                ❤️
+              </Text>
+
+              <Text style={styles.cardText}>
+                Favorites
+              </Text>
+
+              <Text>
+                {favorites.length} saved
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate("Purchase")
+              }
+            >
+              <Text style={styles.icon}>
+                🛒
+              </Text>
+
+              <Text style={styles.cardText}>
+                Cart
+              </Text>
+
+              <Text>
+                {cart.length} item(s)
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+
+          <TouchableOpacity
+            style={styles.profileButton}
+            onPress={() =>
+              navigation.navigate("Profile")
+            }
+          >
+            <Text style={styles.profileText}>
+              👤 My Profile
+            </Text>
+          </TouchableOpacity>
+
+        </View>
+
+      </ScrollView>
+
       <Footer />
 
     </View>
@@ -69,38 +122,71 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  title: {
-    fontSize: 25,
-    fontWeight: "bold",
+  welcome: {
+    fontSize: 18,
     color: "#6F4E37",
-    marginBottom: 10,
   },
 
-  text: {
-    fontSize: 16,
+  title: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#6F4E37",
+    marginTop: 10,
+  },
+
+  subtitle: {
+    color: "#777",
     marginBottom: 25,
   },
 
-  button: {
+  mainButton: {
     backgroundColor: "#6F4E37",
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 15,
+    padding: 18,
+    borderRadius: 12,
+    marginBottom: 20,
   },
 
   buttonText: {
     color: "white",
     textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 17,
+  },
+
+  row: {
+    flexDirection: "row",
+    gap: 12,
+  },
+
+  card: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+
+  icon: {
+    fontSize: 30,
+  },
+
+  cardText: {
     fontSize: 17,
     fontWeight: "bold",
+    marginVertical: 5,
   },
 
-  logout: {
+  profileButton: {
+    marginTop: 20,
     padding: 15,
+    borderWidth: 1,
+    borderColor: "#6F4E37",
+    borderRadius: 10,
   },
 
-  logoutText: {
+  profileText: {
     textAlign: "center",
-    color: "red",
+    color: "#6F4E37",
+    fontWeight: "bold",
   },
 });
