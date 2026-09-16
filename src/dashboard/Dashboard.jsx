@@ -6,13 +6,14 @@ import {
   StyleSheet,
 } from "react-native";
 
-import HeaderFooter from "../HeaderFooter/HeaderFooter";
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 export default function Dashboard({ navigation, cart }) {
   return (
     <View style={styles.container}>
 
-      <HeaderFooter />
+      <Header />
 
       <View style={styles.content}>
 
@@ -52,6 +53,7 @@ export default function Dashboard({ navigation, cart }) {
         </TouchableOpacity>
 
       </View>
+      <Footer />
 
     </View>
   );
