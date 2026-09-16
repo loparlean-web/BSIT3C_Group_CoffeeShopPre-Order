@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   View,
   Text,
@@ -8,17 +9,50 @@ import {
   Alert,
 } from "react-native";
 
-export default function LoginPage({ navigation }) {
-  const [username, setUsername] = useState("");
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export default function LoginPage({
+  navigation,
+  onLogin,
+}) {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (username === "" || password === "") {
-      Alert.alert("Error", "Please enter your username and password.");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert(
+        "Missing Information",
+        "Please enter your email and password."
+      );
+
       return;
     }
 
-    navigation.replace("Dashboard");
+    const savedAccount =
+      await AsyncStorage.getItem("account");
+
+    if (!savedAccount) {
+      Alert.alert(
+        "No Account",
+        "Please register an account first."
+      );
+
+      return;
+    }
+
+    const account = JSON.parse(savedAccount);
+
+    if (
+      email === account.email &&
+      password === account.password
+    ) {
+      onLogin(account);
+    } else {
+      Alert.alert(
+        "Login Failed",
+        "Incorrect email or password."
+      );
+    }
   };
 
   return (
@@ -31,20 +65,22 @@ export default function LoginPage({ navigation }) {
       </Text>
 
       <Text style={styles.subtitle}>
-        Coffee Shop Pre-order App
+        Coffee Shop Pre-Order
       </Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="Email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        value={email}
+        onChangeText={setEmail}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Password"
-        secureTextEntry={true}
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
@@ -55,6 +91,16 @@ export default function LoginPage({ navigation }) {
       >
         <Text style={styles.buttonText}>
           LOGIN
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Register")
+        }
+      >
+        <Text style={styles.register}>
+          Don't have an account? Register
         </Text>
       </TouchableOpacity>
 
@@ -89,9 +135,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#DDD",
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
@@ -104,8 +150,14 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "white",
+    color: "#FFFFFF",
     textAlign: "center",
     fontWeight: "bold",
+  },
+
+  register: {
+    textAlign: "center",
+    marginTop: 20,
+    color: "#6F4E37",
   },
 });
